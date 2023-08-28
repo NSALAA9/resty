@@ -1,41 +1,49 @@
-import React, { useState } from 'react';
-import './App.scss';
-import Header from './Components/Header';
-import Footer from './Components/Footer';
-import Form from './Components/Form';
-import Results from './Components/Results';
-import axios from 'axios';
+
+import React, {  useState } from "react";
+
+import "./App.scss";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import Form from "./Components/Form";
+import Results from "./Components/Results";
+import axios from "axios";
 
 function App() {
-  const [apiData, setApiData] = useState(null);
+  const [data, setData] = useState({ headers: null, results: null });
+
   const [requestParams, setRequestParams] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const callApi = async (requestParams) => {
-    setLoading(true);
-
-    try {
-      const response = await axios.get(requestParams.url);
-      setApiData(response.data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-
+  const callApi = (requestParams) => {
     setRequestParams(requestParams);
-    setLoading(false);
+    setLoading(true);
+    axios
+      .get(requestParams.url)
+      .then((response) => {
+        console.log("data", response);
+        setData({ headers: response.headers, results: response.data });
+
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
+//   useEffect(() => {
+//     callApi(requestParams);
+//     setLoading(false)
+// }, [requestParams]);
+
   return (
-    <div className="app-container">
+    <React.Fragment>
       <Header />
-      <div className="request-info">
-        <div>Request Method: {requestParams.method}</div>
-        <div>URL: {requestParams.url}</div>
-      </div>
+      <div>Request Method: {requestParams.method}</div>
+      <div>URL: {requestParams.url}</div>
       <Form handleApiCall={callApi} />
-      <Results data={apiData} loading={loading} />
+      <Results data={data} loading={loading}  handleApiCall={callApi} />
       <Footer />
-    </div>
+    </React.Fragment>
   );
 }
 
