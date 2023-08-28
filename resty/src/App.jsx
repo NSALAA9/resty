@@ -45,6 +45,7 @@ function App() {
       <Footer />
     </React.Fragment>
   );
+  
 }
 
 export default App;
