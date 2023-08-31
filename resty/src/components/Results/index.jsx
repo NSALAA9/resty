@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./Results.scss";
+import "./Result.scss";
 import JSONPretty from "react-json-prettify";
 
 function Results(props) {
