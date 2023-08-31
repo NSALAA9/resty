@@ -2,10 +2,10 @@
 import React, {  useState } from "react";
 
 import "./App.scss";
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
-import Form from "./Components/Form";
-import Results from "./Components/Results";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Form from "./components/Form";
+import Results from "./components/Results";
 import axios from "axios";
 
 function App() {
