@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import "./Form.scss";
+import { formInitState, formActionType, reducer } from "../../reducers/actions";
 
 function Form(props) {
-  const [method, setMethod] = useState("GET");
-  const [url, setUrl] = useState("");
+  const [state, dispatch] = useReducer(reducer, formInitState);
+
+
 
   const handleMethodChange = (newMethod) => {
-    setMethod(newMethod);
+    dispatch({ type: formActionType.METHOD, payload: newMethod });
+
   };
 
   const handleSubmit = (e) => {
     console.log(e);
     e.preventDefault();
     const formData = {
-      method: method,
-      url: url,
+      method: state.method,
+      url: state.url,
     };
     props.handleApiCall(formData);
   };
@@ -27,21 +30,25 @@ function Form(props) {
           <input
             name="url"
             type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
+            value={state.url}
+            onChange={(e) =>
+              dispatch({ type: formActionType.URL, payload: e.target.value })
+            }
           />
 
           <button type="submit">GO !</button>
         </label>
       </form>
 
-      <textarea
-        id="myTextarea"
-        name="comments"
-        rows="4"
-        cols="100"
-        placeholder="Only Json format"
-      ></textarea>
+      <div>
+        <textarea
+          id="myTextarea"
+          name="comments"
+          rows="4"
+          cols="100"
+          placeholder="Only Json format"
+        ></textarea>{" "}
+      </div>
 
       <label className="button-container">
         <button onClick={() => handleMethodChange("GET")}> GET </button>
